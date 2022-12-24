@@ -33,6 +33,7 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
+				"MisterJ.vue-volar-extention-pack"
 			]
 		}
 	}
