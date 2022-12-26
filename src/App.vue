@@ -1,6 +1,27 @@
 <script setup>
+import { ref, onMounted } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+
+const authInfo = ref(null);
+
+let popup = null;
+
+const login = () => {
+  popup = window.open ("https://poc-saml2.azurewebsites.net/", "auth", "popup");
+}
+
+const updateAuthInfo = (e) => {
+  authInfo.value = e.data.authInfo;
+  popup.close();  
+}
+
+onMounted(() => {
+  login();
+  window.addEventListener('message',  updateAuthInfo);
+})
+
+
 </script>
 
 <template>
@@ -14,6 +35,7 @@ import HelloWorld from './components/HelloWorld.vue'
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
       </nav>
+      <!-- <button @click="login">login</button> -->
     </div>
   </header>
 
