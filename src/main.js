@@ -1,8 +1,10 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-
+import Vue from 'vue'
 import './assets/main.css'
+
+Vue.config.devtools = true;
 
 const app = createApp(App)
 
