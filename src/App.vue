@@ -12,7 +12,7 @@ const login = () => {
 }
 
 const updateAuthInfo = (e) => {
-  console.log(e);
+  if (popup !== e.source) return;
   authInfo.value = e.data;
   console.log(authInfo.value);
   popup.close();  
