@@ -19,7 +19,7 @@ const updateAuthInfo = (e) => {
 }
 
 onMounted(() => {
-  login();
+  //login();
   window.addEventListener('message',  updateAuthInfo);
 })
 
@@ -37,7 +37,7 @@ onMounted(() => {
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
       </nav>
-      <!-- <button @click="login">login</button> -->
+      <button @click="login">login</button>
     </div>
   </header>
 
