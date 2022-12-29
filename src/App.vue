@@ -1,29 +1,6 @@
 <script setup>
-import { ref, onMounted } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
-
-const authInfo = ref(null);
-
-let popup = null;
-
-const login = () => {
-  popup = window.open ("https://poc-saml2.azurewebsites.net/", "auth", "popup");
-}
-
-const updateAuthInfo = (e) => {
-  if (popup !== e.source) return;
-  authInfo.value = e.data;
-  console.log(authInfo.value);
-  popup.close();  
-}
-
-onMounted(() => {
-  //login();
-  window.addEventListener('message',  updateAuthInfo);
-})
-
-
 </script>
 
 <template>
@@ -35,9 +12,9 @@ onMounted(() => {
 
       <nav>
         <RouterLink to="/">Home</RouterLink>
+        <RouterLink to="/login">Login</RouterLink>
         <RouterLink to="/about">About</RouterLink>
       </nav>
-      <button @click="login">login</button>
     </div>
   </header>
 
