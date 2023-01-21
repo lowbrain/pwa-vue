@@ -41,10 +41,7 @@ onMounted(() => {
   // initialize
   if (localStorage.getItem("auth")) {
     let authTmp = JSON.parse(localStorage.getItem("auth"));
-    if ((Date.now() - authTmp.date) <= 60 * 5 * 1000) {
-      authTmp.date = Date.now();
-      authInfo.value = authTmp;
-    }
+    if ((Date.now() - authTmp.date) <= 60 * 5 * 1000) authInfo.value = authTmp;
   }
   // loginイベントをハンドリング
   window.addEventListener('message',  updateAuthInfo);
