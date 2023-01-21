@@ -1,25 +1,62 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 
 const authInfo = ref(null);
 
 let popup = null;
 
+let displayTime = Date.now();
+
 const login = () => {
-  popup = window.open ("https://poc-saml2.azurewebsites.net/", "auth", "popup");
+  if (navigator.onLine) {
+    popup = window.open ("https://poc-saml2.azurewebsites.net/", "auth", "popup");
+  } else if(localStorage.getItem("auth")) {
+    authInfo.value = JSON.parse(localStorage.getItem("auth"));
+  } else {
+    alert("現在ネットワークがオフラインです。¥nオンラインになってからもう一度試してください。");
+  }
+}
+
+const stateChange = (e) => {
+  if (!authInfo.value) return;
+  if (document.visibilityState === 'visible') {
+    if ((Date.now() - displayTime) >= 60 * 1000) {
+      alert("１分以上経過したためログイン情報をクリアしました。");
+      authInfo.value = null;
+    }
+  } else {
+    displayTime = Date.now();
+  }
 }
 
 const updateAuthInfo = (e) => {
   if (popup !== e.source) return;
   authInfo.value = e.data;
-  console.log(authInfo.value);
-  console.log(authInfo.value.name[0]);
+  authInfo.value["date"] = Date.now();
+  localStorage.setItem("auth", JSON.stringify(authInfo.value));
   popup.close();  
 }
 
 onMounted(() => {
-  // login();
+  // initialize
+  if (localStorage.getItem("auth")) {
+    let authTmp = JSON.parse(localStorage.getItem("auth"));
+    if ((Date.now() - authTmp.date) <= 60 * 5 * 1000) {
+      authTmp.date = Date.now();
+      authInfo.value = authTmp;
+    }
+  }
+  // loginイベントをハンドリング
   window.addEventListener('message',  updateAuthInfo);
+  // 画面表示イベントをハンドリング
+  document.addEventListener('visibilitychange', stateChange);
+})
+
+onUnmounted(() => {
+  // loginイベントをハンドリング
+  window.removeEventListener('message',  updateAuthInfo);
+  // 画面表示イベントをハンドリング
+  document.removeEventListener('visibilitychange', stateChange);
 })
 </script>
 
