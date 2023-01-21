@@ -11,6 +11,7 @@ const login = () => {
   if (navigator.onLine) {
     popup = window.open ("https://poc-saml2.azurewebsites.net/", "auth", "popup");
   } else if(localStorage.getItem("auth")) {
+    alert("現在ネットワークがオフラインであるため、以前の認証情報を利用します。");
     authInfo.value = JSON.parse(localStorage.getItem("auth"));
   } else {
     alert("現在ネットワークがオフラインです。¥nオンラインになってからもう一度試してください。");
