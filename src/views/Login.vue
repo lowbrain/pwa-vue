@@ -19,8 +19,7 @@ const login = () => {
 }
 
 const stateChange = (e) => {
-  if (!authInfo.value) return;
-  if (document.visibilityState === 'visible') {
+  if (document.visibilityState === 'visible' && authInfo.value) {
     if ((Date.now() - displayTime) >= 60 * 1000) {
       alert("１分以上経過したためログイン情報をクリアしました。");
       authInfo.value = null;
@@ -42,7 +41,7 @@ onMounted(() => {
   // initialize
   if (localStorage.getItem("auth")) {
     let authTmp = JSON.parse(localStorage.getItem("auth"));
-    if ((Date.now() - authTmp.date) <= 60 * 5 * 1000) authInfo.value = authTmp;
+    if ((Date.now() - authTmp.date) <= 60 * 1000) authInfo.value = authTmp;
   }
   // loginイベントをハンドリング
   window.addEventListener('message',  updateAuthInfo);
